@@ -198,7 +198,7 @@ export default function Landing() {
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <h2>Fitur Utama UTBKPro</h2>
+            <h2>Fitur Utama PintarUtbk</h2>
             <p>
               Jelajahi ekosistem pembelajaran terlengkap untuk menembus PTN
               impianmu

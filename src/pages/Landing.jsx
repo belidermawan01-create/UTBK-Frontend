@@ -161,7 +161,7 @@ export default function Landing() {
           <h1 className="hero-title">
             Raih PTN Impianmu
             <br />
-            <span className="gradient-text">Bersama pintarutbk</span>
+            <span className="gradient-text">Bersama PintarUtbk</span>
           </h1>
           <p className="hero-subtitle">
             Latihan soal UTBK terstruktur dengan pembahasan lengkap. Kuasai TPS,

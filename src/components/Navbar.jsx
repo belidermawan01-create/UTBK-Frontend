@@ -9,11 +9,10 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = async () => {
-    if (!window.confirm("Apakah Anda yakin ingin logout?")) {
-      return;
-    }
+    setShowLogoutModal(false);
     try {
       await logout();
     } catch (_) {}
@@ -64,7 +63,7 @@ export default function Navbar() {
                   {l.label}
                 </Link>
               ))}
-              <button className="btn btn-ghost nav-link" onClick={handleLogout}>
+              <button className="btn btn-ghost nav-link" onClick={() => setShowLogoutModal(true)}>
                 Logout
               </button>
             </div>
@@ -90,6 +89,23 @@ export default function Navbar() {
           </div>
         )}
       </div>
+
+      {showLogoutModal && (
+        <div className="modal-overlay" onClick={() => setShowLogoutModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Konfirmasi Logout</h3>
+            <p>Apakah Anda yakin ingin keluar dari akun ini?</p>
+            <div className="modal-actions">
+              <button className="btn btn-ghost" onClick={() => setShowLogoutModal(false)}>
+                Batal
+              </button>
+              <button className="btn btn-danger" onClick={handleLogout}>
+                Ya, Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

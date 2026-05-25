@@ -109,30 +109,6 @@ const features = [
       },
     ],
   },
-  {
-    id: "analytic",
-    icon: <BarChart2 size={32} />,
-    title: "Analytics & Dashboard",
-    desc: "Progress - Prediksi - Insight",
-    subFeatures: [
-      {
-        title: "Dashboard belajar",
-        desc: "Pantau aktivitas dan statistik belajarmu dalam satu tampilan.",
-      },
-      {
-        title: "Prediksi kelulusan",
-        desc: "Hitung peluang lolos di jurusan tujuan dari skor tryout.",
-      },
-      {
-        title: "Analisis kelemahan",
-        desc: "Ketahui topik mana yang paling butuh porsi latihan lebih.",
-      },
-      {
-        title: "Laporan mingguan",
-        desc: "Rangkuman perkembangan belajarmu setiap minggunya.",
-      },
-    ],
-  },
 ];
 
 const stats = [

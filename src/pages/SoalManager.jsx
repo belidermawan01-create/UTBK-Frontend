@@ -80,7 +80,7 @@ export default function SoalManager() {
 
     setForm({
       tipe: tipe,
-      pertanyaan: s.pertanyaan,
+      pertanyaan: s.pertanyaan?.replace(/\[SEED\]\s*/g, ''),
       opsi: parsedOpsi || getInitialOpsi(tipe),
       jawaban: initialJawaban, // User must re-enter answer when editing
       pembahasan: s.pembahasan || '',
@@ -335,7 +335,7 @@ export default function SoalManager() {
                       <td><span className={`mapel-badge-sm`}>{s.mapel}</span></td>
                       <td><span className={`tingkat-badge tingkat-${s.tingkat}`}>{s.tingkat}</span></td>
                       <td><span className="badge-outline">{s.tipe || 'SINGLE_CHOICE'}</span></td>
-                      <td title={s.pertanyaan}>{truncate(s.pertanyaan, 50)}</td>
+                      <td title={s.pertanyaan?.replace(/\[SEED\]\s*/g, '')}>{truncate(s.pertanyaan?.replace(/\[SEED\]\s*/g, ''), 50)}</td>
                       <td>
                         <div className="flex-actions">
                           <button className="btn btn-ghost btn-xs" onClick={() => handleOpenEdit(s)}>Edit</button>

@@ -241,7 +241,7 @@ export default function Ujian() {
               <span className={`tingkat-badge tingkat-${soal.tingkat}`}>{soal.tingkat}</span>
               <span className="badge-outline" style={{ marginLeft: 'auto' }}>{soal.tipe || 'SINGLE_CHOICE'}</span>
             </div>
-            <p className="soal-pertanyaan">{soal.pertanyaan}</p>
+            <p className="soal-pertanyaan">{soal.pertanyaan?.replace(/\[SEED\]\s*/g, '')}</p>
             <div className="opsi-list">
               {renderOpsi()}
             </div>

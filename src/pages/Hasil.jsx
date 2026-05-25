@@ -178,7 +178,7 @@ export default function Hasil() {
                     </span>
                   </div>
                   
-                  <p className="pembahasan-pertanyaan">{j.soal?.pertanyaan}</p>
+                  <p className="pembahasan-pertanyaan">{j.soal?.pertanyaan?.replace(/\[SEED\]\s*/g, '')}</p>
                   
                   {renderOpsiReview(j)}
 

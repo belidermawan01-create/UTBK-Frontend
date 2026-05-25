@@ -128,7 +128,7 @@ export default function Latihan() {
             {loading ? (
               <span className="spinner-sm" />
             ) : (
-              "<Rocket size={20} /> Mulai Latihan"
+              "Mulai Latihan"
             )}
           </button>
         </div>

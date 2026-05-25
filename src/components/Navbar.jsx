@@ -11,6 +11,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
+    if (!window.confirm("Apakah Anda yakin ingin logout?")) {
+      return;
+    }
     try {
       await logout();
     } catch (_) {}

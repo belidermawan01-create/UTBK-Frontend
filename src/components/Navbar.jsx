@@ -44,7 +44,7 @@ export default function Navbar() {
             <Sparkles size={16} />
           </span>
           <span>
-            UTBK<span className="brand-accent">Pro</span>
+            Pintar<span className="brand-accent">Utbk</span>
           </span>
         </Link>
 

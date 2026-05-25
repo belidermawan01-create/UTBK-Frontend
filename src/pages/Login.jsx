@@ -18,9 +18,18 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await login(form);
-      signIn(res.data.access_token, res.data.user);
+      const user = res.data.user;
+      signIn(res.data.access_token, user);
       addToast('Login berhasil! Selamat datang kembali 👋', 'success');
-      setTimeout(() => navigate('/dashboard'), 800);
+      
+      const isAdmin =
+        user?.role?.toLowerCase() === "admin" ||
+        user?.user_metadata?.role?.toLowerCase() === "admin" ||
+        user?.app_metadata?.role?.toLowerCase() === "admin" ||
+        user?.email?.toLowerCase().includes("admin") ||
+        user?.email?.toLowerCase().includes("abu");
+
+      setTimeout(() => navigate(isAdmin ? '/admin/dashboard' : '/dashboard'), 800);
     } catch (err) {
       addToast(err.response?.data?.message || 'Login gagal', 'error');
     } finally {

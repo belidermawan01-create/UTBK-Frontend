@@ -1,7 +1,16 @@
-import { Sparkles, BarChart, FileText, Users, Globe, LogOut, Search, Bell } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { logout } from '../api/api';
+import {
+  Sparkles,
+  BarChart,
+  FileText,
+  Users,
+  Globe,
+  LogOut,
+  Search,
+  Bell,
+} from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { logout } from "../api/api";
 
 export default function AdminLayout({ children }) {
   const { user, signOut } = useAuth();
@@ -9,15 +18,20 @@ export default function AdminLayout({ children }) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    try { await logout(); } catch (_) {}
+    try {
+      await logout();
+    } catch (_) {}
     signOut();
-    navigate('/login');
+    navigate("/login");
   };
 
   const menuItems = [
-    { path: '/admin/dashboard', icon: <BarChart size={20} />, label: 'Dashboard Admin' },
-    { path: '/admin/soal', icon: <FileText size={20} />, label: 'Kelola Soal' },
-    { path: '/admin/users', icon: <Users size={20} />, label: 'Kelola Pengguna' },
+    {
+      path: "/admin/dashboard",
+      icon: <BarChart size={20} />,
+      label: "Dashboard Admin",
+    },
+    { path: "/admin/soal", icon: <FileText size={20} />, label: "Kelola Soal" },
   ];
 
   return (
@@ -25,10 +39,14 @@ export default function AdminLayout({ children }) {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-header">
-          <span className="brand-icon"><Sparkles size={16} /></span>
-          <span>UTBK<span className="brand-accent">Admin</span></span>
+          <span className="brand-icon">
+            <Sparkles size={16} />
+          </span>
+          <span>
+            UTBK<span className="brand-accent">Admin</span>
+          </span>
         </div>
-        
+
         <div className="sidebar-user">
           <div className="avatar">{user?.email?.charAt(0).toUpperCase()}</div>
           <div className="user-info">
@@ -40,10 +58,10 @@ export default function AdminLayout({ children }) {
         <nav className="sidebar-nav">
           <div className="nav-label">Menu Utama</div>
           {menuItems.map((item) => (
-            <Link 
-              key={item.path} 
-              to={item.path} 
-              className={`sidebar-link ${location.pathname.startsWith(item.path) ? 'active' : ''}`}
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`sidebar-link ${location.pathname.startsWith(item.path) ? "active" : ""}`}
             >
               <span className="sidebar-icon">{item.icon}</span>
               {item.label}
@@ -52,12 +70,13 @@ export default function AdminLayout({ children }) {
         </nav>
 
         <div className="sidebar-footer">
-          <Link to="/dashboard" className="sidebar-link">
-            <span className="sidebar-icon"><Globe size={20} /></span>
-            Kembali ke Web
-          </Link>
-          <button onClick={handleLogout} className="sidebar-link text-red w-full text-left">
-            <span className="sidebar-icon"><LogOut size={20} /></span>
+          <button
+            onClick={handleLogout}
+            className="sidebar-link text-red w-full text-left"
+          >
+            <span className="sidebar-icon">
+              <LogOut size={20} />
+            </span>
             Logout
           </button>
         </div>
@@ -67,17 +86,21 @@ export default function AdminLayout({ children }) {
       <main className="admin-main">
         <header className="admin-topbar">
           <div className="topbar-search">
-            <span className="search-icon"><Search size={20} /></span>
+            <span className="search-icon">
+              <Search size={20} />
+            </span>
             <input type="text" placeholder="Cari sesuatu..." />
           </div>
           <div className="topbar-actions">
-            <button className="btn-icon"><Bell size={20} /></button>
-            <div className="avatar-sm">{user?.email?.charAt(0).toUpperCase()}</div>
+            <button className="btn-icon">
+              <Bell size={20} />
+            </button>
+            <div className="avatar-sm">
+              {user?.email?.charAt(0).toUpperCase()}
+            </div>
           </div>
         </header>
-        <div className="admin-content">
-          {children}
-        </div>
+        <div className="admin-content">{children}</div>
       </main>
     </div>
   );

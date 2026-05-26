@@ -1,13 +1,13 @@
-import { Sparkles } from 'lucide-react';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../api/api';
-import { useAuth } from '../context/AuthContext';
-import { useToast } from '../hooks/useToast';
-import Toast from '../components/Toast';
+import { Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login, getMe } from "../api/api";
+import { useAuth } from "../context/AuthContext";
+import { useToast } from "../hooks/useToast";
+import Toast from "../components/Toast";
 
 export default function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
@@ -18,20 +18,26 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await login(form);
-      const user = res.data.user;
-      signIn(res.data.access_token, user);
-      addToast('Login berhasil! Selamat datang kembali 👋', 'success');
+      const token = res.data.access_token;
       
-      const isAdmin =
-        user?.role?.toLowerCase() === "admin" ||
-        user?.user_metadata?.role?.toLowerCase() === "admin" ||
-        user?.app_metadata?.role?.toLowerCase() === "admin" ||
-        user?.email?.toLowerCase().includes("admin") ||
-        user?.email?.toLowerCase().includes("abu");
+      // Set token sementara untuk request getMe()
+      localStorage.setItem("access_token", token);
+      
+      const meRes = await getMe();
+      const user = meRes.data.data || meRes.data.user;
+      
+      signIn(token, user);
+      addToast("Login berhasil! Selamat datang kembali 👋", "success");
 
-      setTimeout(() => navigate(isAdmin ? '/admin/dashboard' : '/dashboard'), 800);
+      const isAdmin = user?.role === "ADMIN" || user?.role?.toLowerCase() === "admin";
+
+      setTimeout(
+        () => navigate(isAdmin ? "/admin/dashboard" : "/dashboard"),
+        800,
+      );
     } catch (err) {
-      addToast(err.response?.data?.message || 'Login gagal', 'error');
+      localStorage.removeItem("access_token");
+      addToast(err.response?.data?.message || "Login gagal", "error");
     } finally {
       setLoading(false);
     }
@@ -43,7 +49,9 @@ export default function Login() {
       <div className="auth-bg-glow" />
       <div className="auth-card">
         <div className="auth-header">
-          <div className="auth-logo"><Sparkles size={16} /></div>
+          <div className="auth-logo">
+            <Sparkles size={16} />
+          </div>
           <h1>Selamat Datang</h1>
           <p>Masuk untuk lanjut latihan UTBK</p>
         </div>
@@ -70,8 +78,12 @@ export default function Login() {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
-            {loading ? <span className="spinner-sm" /> : 'Masuk'}
+          <button
+            type="submit"
+            className="btn btn-primary btn-full"
+            disabled={loading}
+          >
+            {loading ? <span className="spinner-sm" /> : "Masuk"}
           </button>
         </form>
         <p className="auth-footer-text">

@@ -10,12 +10,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      getMe()
+        getMe()
         .then((res) => {
-          let userData = res.data.user;
+          let userData = res.data.data || res.data.user;
           try {
             const payload = JSON.parse(atob(token.split('.')[1]));
-            userData = { ...userData, user_metadata: payload.user_metadata, app_metadata: payload.app_metadata, role: payload.role };
+            userData = { ...userData, user_metadata: payload.user_metadata, app_metadata: payload.app_metadata, role: userData?.role || payload.role };
           } catch(e) {}
           setUser(userData);
         })

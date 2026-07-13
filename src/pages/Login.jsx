@@ -5,6 +5,7 @@ import { login, getMe } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../hooks/useToast";
 import Toast from "../components/Toast";
+import { getErrorMessage, isAdminUser, setAuthToken } from "../utils/auth";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -19,25 +20,24 @@ export default function Login() {
     try {
       const res = await login(form);
       const token = res.data.access_token;
-      
-      // Set token sementara untuk request getMe()
-      localStorage.setItem("access_token", token);
-      
+
+      setAuthToken(token);
+
       const meRes = await getMe();
       const user = meRes.data.data || meRes.data.user;
-      
+
       signIn(token, user);
       addToast("Login berhasil! Selamat datang kembali 👋", "success");
 
-      const isAdmin = user?.role === "ADMIN" || user?.role?.toLowerCase() === "admin";
+      const isAdmin = isAdminUser(user);
 
       setTimeout(
         () => navigate(isAdmin ? "/admin/dashboard" : "/dashboard"),
         800,
       );
     } catch (err) {
-      localStorage.removeItem("access_token");
-      addToast(err.response?.data?.message || "Login gagal", "error");
+      setAuthToken(null);
+      addToast(getErrorMessage(err, "Login gagal"), "error");
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { logout } from "../api/api";
 import { useState } from "react";
+import { isAdminUser } from "../utils/auth";
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
@@ -20,17 +21,13 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const isAdmin =
-    user?.role?.toLowerCase() === "admin" ||
-    user?.user_metadata?.role?.toLowerCase() === "admin" ||
-    user?.app_metadata?.role?.toLowerCase() === "admin" ||
-    user?.email?.toLowerCase().includes("admin") ||
-    user?.email?.toLowerCase().includes("abu");
+  const isAdmin = isAdminUser(user);
 
   const navLinks = [
     { to: "/dashboard", label: "Dashboard" },
     { to: "/latihan", label: "Latihan" },
     { to: "/riwayat", label: "Riwayat" },
+    { to: "/tryout", label: "Tryout" },
     { to: "/info-ptn", label: "Info PTN" },
   ];
 
@@ -63,7 +60,10 @@ export default function Navbar() {
                   {l.label}
                 </Link>
               ))}
-              <button className="btn btn-ghost nav-link" onClick={() => setShowLogoutModal(true)}>
+              <button
+                className="btn btn-ghost nav-link"
+                onClick={() => setShowLogoutModal(true)}
+              >
                 Logout
               </button>
             </div>
@@ -91,12 +91,18 @@ export default function Navbar() {
       </div>
 
       {showLogoutModal && (
-        <div className="modal-overlay" onClick={() => setShowLogoutModal(false)}>
+        <div
+          className="modal-overlay"
+          onClick={() => setShowLogoutModal(false)}
+        >
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h3>Konfirmasi Logout</h3>
             <p>Apakah Anda yakin ingin keluar dari akun ini?</p>
             <div className="modal-actions">
-              <button className="btn btn-ghost" onClick={() => setShowLogoutModal(false)}>
+              <button
+                className="btn btn-ghost"
+                onClick={() => setShowLogoutModal(false)}
+              >
                 Batal
               </button>
               <button className="btn btn-danger" onClick={handleLogout}>

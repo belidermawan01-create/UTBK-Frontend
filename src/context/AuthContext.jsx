@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { getMe } from '../api/api';
+import { createContext, useContext, useState, useEffect } from "react";
+import { getMe } from "../api/api";
+import { getAuthToken, setAuthToken } from "../utils/auth";
 
 const AuthContext = createContext(null);
 
@@ -8,18 +9,25 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+    const token = getAuthToken();
     if (token) {
-        getMe()
+      getMe()
         .then((res) => {
           let userData = res.data.data || res.data.user;
           try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            userData = { ...userData, user_metadata: payload.user_metadata, app_metadata: payload.app_metadata, role: userData?.role || payload.role };
-          } catch(e) {}
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            userData = {
+              ...userData,
+              user_metadata: payload.user_metadata,
+              app_metadata: payload.app_metadata,
+              role: userData?.role || payload.role,
+            };
+          } catch (_) {}
           setUser(userData);
         })
-        .catch(() => { localStorage.removeItem('access_token'); })
+        .catch(() => {
+          setAuthToken(null);
+        })
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -27,12 +35,12 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signIn = (token, userData) => {
-    localStorage.setItem('access_token', token);
+    setAuthToken(token);
     setUser(userData);
   };
 
   const signOut = () => {
-    localStorage.removeItem('access_token');
+    setAuthToken(null);
     setUser(null);
   };
 

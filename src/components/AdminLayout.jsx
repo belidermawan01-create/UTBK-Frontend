@@ -2,7 +2,8 @@ import {
   Sparkles,
   BarChart,
   FileText,
-  Users,
+  Book,
+  Trophy,
   Globe,
   LogOut,
   Search,
@@ -31,7 +32,18 @@ export default function AdminLayout({ children }) {
       icon: <BarChart size={20} />,
       label: "Dashboard Admin",
     },
+    {
+      path: "/admin/tryout",
+      icon: <Trophy size={20} />,
+      label: "Tryout Manager",
+    },
     { path: "/admin/soal", icon: <FileText size={20} />, label: "Kelola Soal" },
+    { path: "/admin/ptn", icon: <Globe size={20} />, label: "Kelola PTN" },
+    {
+      path: "/admin/jurusan",
+      icon: <Book size={20} />,
+      label: "Kelola Jurusan",
+    },
   ];
 
   return (

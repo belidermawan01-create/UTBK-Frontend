@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { register } from "../api/api";
 import { useToast } from "../hooks/useToast";
 import Toast from "../components/Toast";
+import { getErrorMessage } from "../utils/auth";
 
 export default function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -22,7 +23,7 @@ export default function Register() {
       );
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
-      addToast(err.response?.data?.message || "Registrasi gagal", "error");
+      addToast(getErrorMessage(err, "Registrasi gagal"), "error");
     } finally {
       setLoading(false);
     }
